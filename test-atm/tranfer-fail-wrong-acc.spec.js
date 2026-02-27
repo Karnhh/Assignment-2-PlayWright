@@ -3,10 +3,22 @@ import path from "path";
 import { test, expect } from "@playwright/test";
 import { parse } from "csv-parse/sync";
 
-const records = parse(fs.readFileSync(path.join(__dirname, "input.csv")), {
+const records = parse(fs.readFileSync(path.join(__dirname, "input4.csv")), {
   columns: true,
   skip_empty_lines: true,
 });
+
+async function getBalance(page) {
+  const balanceLocator = page.locator(".text-3xl");
+
+  await expect(balanceLocator).toBeVisible();
+
+  const raw = await balanceLocator.textContent();
+
+  return Number(
+    raw.replace("฿", "").replace(/,/g, "").trim()
+  );
+}
 
 for (const record of records) {
   test(`Login ${record.test_case_id}`, async ({ page }) => {
@@ -27,5 +39,18 @@ for (const record of records) {
     await expect(
       page.getByRole("heading", { name: "ยอดเงินคงเหลือ" }),
     ).toBeVisible();
+
+    await page.getByRole('heading', { name: 'โอนเงิน' }).click();
+    
+    const initialBalance = await getBalance(page);
+    await page.getByRole('textbox', { name: 'กรอกหมายเลขบัญชี 6 หลัก' }).fill('111111');
+    await page.getByRole('button', { name: '฿1,000.00' }).click();
+    const tranferAmount = 1000;
+    page.getByRole('button', { name: 'โอนเงิน ฿' }).click();
+
+    await expect(page.getByText('ไม่พบบัญชีปลายทาง', { exact: true })).toBeVisible();
+
+    const finalBalance = await getBalance(page);
+    expect(finalBalance).toBe(initialBalance);
   });
 }

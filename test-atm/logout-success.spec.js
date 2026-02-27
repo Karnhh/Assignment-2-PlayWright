@@ -3,7 +3,7 @@ import path from "path";
 import { test, expect } from "@playwright/test";
 import { parse } from "csv-parse/sync";
 
-const records = parse(fs.readFileSync(path.join(__dirname, "input.csv")), {
+const records = parse(fs.readFileSync(path.join(__dirname, "input1.csv")), {
   columns: true,
   skip_empty_lines: true,
 });
@@ -26,6 +26,13 @@ for (const record of records) {
     await page.getByRole("button", { name: "เข้าสู่ระบบ" }).click();
     await expect(
       page.getByRole("heading", { name: "ยอดเงินคงเหลือ" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "ออกจากระบบ" }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "ออกจากระบบ" }).click();
+    await expect(
+      page.getByRole("heading", { name: "เข้าสู่ระบบ" }),
     ).toBeVisible();
   });
 }
