@@ -1,0 +1,25 @@
+{
+  "name": "assignment-2-playwright",
+  "version": "1.0.0",
+  "description": "",
+  "main": "playwright.config.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Karnhh/Assignment-2-PlayWright.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Karnhh/Assignment-2-PlayWright/issues"
+  },
+  "homepage": "https://github.com/Karnhh/Assignment-2-PlayWright#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.3.2"
+  },
+  "dependencies": {
+    "csv-parse": "^6.1.0"
+  }
+}
